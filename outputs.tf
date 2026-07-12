@@ -1,3 +1,7 @@
+output "key_vault_managed_storage_account_sas_token_definitions_id" {
+  description = "Map of id values across all key_vault_managed_storage_account_sas_token_definitions, keyed the same as var.key_vault_managed_storage_account_sas_token_definitions"
+  value       = { for k, v in azurerm_key_vault_managed_storage_account_sas_token_definition.key_vault_managed_storage_account_sas_token_definitions : k => v.id }
+}
 output "key_vault_managed_storage_account_sas_token_definitions_managed_storage_account_id" {
   description = "Map of managed_storage_account_id values across all key_vault_managed_storage_account_sas_token_definitions, keyed the same as var.key_vault_managed_storage_account_sas_token_definitions"
   value       = { for k, v in azurerm_key_vault_managed_storage_account_sas_token_definition.key_vault_managed_storage_account_sas_token_definitions : k => v.managed_storage_account_id }
