@@ -19,22 +19,6 @@ EOT
     validity_period            = string
     tags                       = optional(map(string))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.key_vault_managed_storage_account_sas_token_definitions : (
-        length(v.sas_template_uri) > 0
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.key_vault_managed_storage_account_sas_token_definitions : (
-        contains(["service", "account"], v.sas_type)
-      )
-    ])
-    error_message = "must be one of: service, account"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_key_vault_managed_storage_account_sas_token_definition's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -51,6 +35,12 @@ EOT
   #   source:    [from keyvault.ValidateNestedItemID] !ok
   # path: managed_storage_account_id
   #   source:    [from keyvault.ValidateNestedItemID] err != nil
+  # path: sas_template_uri
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: sas_type
+  #   condition: contains(["service", "account"], value)
+  #   message:   must be one of: service, account
   # path: validity_period
   #   source:    [from validate.ISO8601Duration] !ok
   # path: validity_period
